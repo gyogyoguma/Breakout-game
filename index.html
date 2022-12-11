@@ -14,11 +14,11 @@
 
   const canvas = document.getElementById("myCanvas");  // <canvas> 要素への参照を canvas に保存
   const ctx = canvas.getContext("2d"); //2D 描画コンテキストを保存するために ctx 変数を作成
-  const ballRadius = 10;
-  const paddleHeight = 10;
+  const ballRadius = 10; 
+  const paddleHeight = 10; 
   const paddleWidth = 75;
 
-  let paddleX = (canvas.width - paddleWidth) / 2;
+  let paddleX = (canvas.width - paddleWidth) / 2; 
   let rightPressed = false;
   let leftPressed = false;
 
@@ -48,8 +48,9 @@
   //ボールの移動描画
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let randomColor = "rgb(" + (~~(256 * Math.random())) + ", " + (~~(256 * Math.random())) + ", " + (~~(256 * Math.random())) + ")" ;
 
-
+    //ここでpaddleの移動速度調整できる
     if (rightPressed) {
       paddleX = Math.min(paddleX + 7, canvas.width - paddleWidth);
     } else if (leftPressed) {
@@ -57,19 +58,18 @@
     }
 
     if (x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
-      let randomColor = "rgb(" + (~~(256 * Math.random())) + ", " + (~~(256 * Math.random())) + ", " + (~~(256 * Math.random())) + ")" ;
       dx = -dx;
-      ctx.beginPath();
+      // ctx.beginPath();
       ctx.fillStyle = randomColor;
-      ctx.closePath();
+      // ctx.closePath();
     }
 
-    if (y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
-      let randomColor = "rgb(" + (~~(256 * Math.random())) + ", " + (~~(256 * Math.random())) + ", " + (~~(256 * Math.random())) + ")" ;
+    if (y + dy < ballRadius) {
       dy = -dy;
-      ctx.beginPath();
-      ctx.fillStyle = randomColor;
-      ctx.closePath();
+    } else if (y + dy > canvas.height-ballRadius) {
+      alert("GAME OVER");
+      document.location.reload();
+      clearInterval(interval); // Needed for Chrome to end game
     }
 
     drawBall();
@@ -98,7 +98,8 @@ function keyUpHandler(e) {
   }
 }
 
-  setInterval(draw, 10);
+const interval = setInterval(draw, 10);
+
 
 
 </script>
